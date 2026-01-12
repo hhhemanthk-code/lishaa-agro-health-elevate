@@ -1,183 +1,223 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { 
-  MapPin, 
-  Phone, 
-  Mail, 
-  Facebook, 
-  Twitter, 
-  Linkedin, 
-  Instagram,
-  Leaf
-} from "lucide-react";
-import logo from "@/assets/lishaa-logo.png";
+import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin, ArrowRight, Heart, Leaf } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import logo from "@/assets/lishaa logo (1).png";
+import { useToast } from "@/hooks/use-toast";
 
 const Footer = () => {
-  const quickLinks = [
-    { name: "About Us", path: "/about" },
-    { name: "Our Products", path: "/products" },
-    { name: "Research", path: "/research" },
-    { name: "Leadership", path: "/leadership" },
-    { name: "Dealership", path: "/dealership" },
-    { name: "Contact", path: "/contact" },
-  ];
+  const { toast } = useToast();
 
-  const products = [
-    "Herbal Supplements",
-    "Organic Health Solutions",
-    "Natural Wellness",
-    "Agricultural Products",
-    "Bio-Fertilizers",
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    toast({
+      title: "Welcome to the Family! 🌿",
+      description: "You've successfully subscribed to our wellness newsletter.",
+      duration: 5000,
+    });
+  };
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5, ease: "easeOut" }
+    },
+  };
+
+  const socialLinks = [
+    { icon: Facebook, href: "#" },
+    { icon: Instagram, href: "#" },
+    { icon: Twitter, href: "#" },
+    { icon: Linkedin, href: "#" },
   ];
 
   return (
-    <footer className="bg-secondary text-secondary-foreground relative overflow-hidden">
-      {/* Organic shapes */}
-      <div className="absolute top-0 right-0 w-96 h-96 organic-shape-1 opacity-5" />
-      <div className="absolute bottom-0 left-0 w-64 h-64 organic-shape-2 opacity-5" />
+    <footer className="relative bg-[#0d2e20] text-white pt-32 pb-12 border-t border-white/10">
+      {/* Background Wrapper with Overflow Hidden */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* 3D Texture & ambient light */}
+        <div className="absolute inset-0 opacity-[0.05] bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
 
-      <div className="container mx-auto px-4 lg:px-8 py-16 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+        {/* Glow Effects */}
+        <div className="absolute -top-[30%] -left-[10%] w-[900px] h-[900px] bg-emerald-500/10 rounded-full blur-[180px] opacity-30 animate-pulse" />
+        <div className="absolute top-[40%] -right-[10%] w-[600px] h-[600px] bg-lime-400/5 rounded-full blur-[150px] opacity-20" />
+      </div>
+
+      <div className="container mx-auto px-4 lg:px-8 relative z-20">
+
+        {/* Floating Newsletter Card - Glass & Green */}
+        <motion.div
+          initial={{ y: 30, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="relative -mt-48 mb-20 bg-gradient-to-br from-emerald-900/40 to-emerald-950/40 backdrop-blur-md rounded-[2.5rem] p-8 md:p-14 border border-white/10 shadow-[0_32px_64px_-12px_rgba(0,0,0,0.3)] overflow-hidden group"
+        >
+          {/* Shine Effect */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out" />
+
+          <div className="grid lg:grid-cols-2 gap-10 items-center relative z-10">
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 bg-emerald-500/20 rounded-full border border-emerald-500/20">
+                  <Leaf className="h-5 w-5 text-emerald-400" />
+                </div>
+                <span className="text-emerald-400 font-bold tracking-widest uppercase text-xs">Newsletter</span>
+              </div>
+              <h3 className="font-display text-3xl md:text-5xl font-bold mb-4 text-white leading-tight">
+                Join Our Wellness Circle
+              </h3>
+              <p className="text-white/70 text-lg font-light max-w-md leading-relaxed">
+                Connect with nature’s best. Get exclusive offers and holistic health tips delivered to you.
+              </p>
+            </div>
+
+            <form onSubmit={handleSubscribe} className="bg-black/20 p-2 rounded-full flex items-center border border-white/10 focus-within:bg-black/30 focus-within:border-emerald-500/50 transition-all shadow-inner relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/5 to-transparent opacity-0 focus-within:opacity-100 transition-opacity pointer-events-none" />
+              <Input
+                required
+                type="email"
+                placeholder="Enter your email address..."
+                className="bg-transparent border-none text-white placeholder:text-white/40 h-14 rounded-full px-6 focus-visible:ring-0 text-lg shadow-none z-10"
+              />
+              <Button type="submit" size="icon" className="h-14 w-14 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white shrink-0 shadow-lg hover:scale-105 transition-all duration-300 z-10">
+                <ArrowRight className="h-6 w-6" />
+              </Button>
+            </form>
+          </div>
+        </motion.div>
+
+        {/* Footer Links Grid */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 mb-16 pt-8"
+        >
           {/* Brand Column */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <Link to="/" className="flex items-center gap-3 mb-6">
-              <img src={logo} alt="Lishaa Agro Health" className="h-14 w-auto" />
-              <div>
-                <p className="font-display text-xl font-semibold text-cream">
-                  LISHAA
-                </p>
-                <p className="text-xs tracking-wider text-cream/70">
-                  AGRO HEALTH
-                </p>
+          <motion.div variants={itemVariants} className="lg:col-span-4 space-y-6">
+            <Link to="/" className="flex items-center gap-4 group w-fit">
+              <div className="w-16 h-16 bg-white/5 backdrop-blur-sm rounded-2xl flex items-center justify-center border border-white/10 group-hover:bg-white/10 transition-colors">
+                <img src={logo} alt="Lishaa Logo" className="h-10 w-auto brightness-200 contrast-0 grayscale sm:grayscale-0 sm:contrast-100 sm:brightness-100" />
+              </div>
+              <div className="flex flex-col">
+                <span className="font-display text-2xl font-bold tracking-wide text-white">LISHAA</span>
+                <span className="text-[10px] tracking-[0.4em] text-emerald-400 uppercase font-bold">Agro Health</span>
               </div>
             </Link>
-            <p className="text-cream/80 text-sm leading-relaxed mb-6">
-              Nourishing Nature, Enriching Lives. Pioneering sustainable health 
-              solutions through nature-inspired innovation.
+            <p className="text-white/60 leading-relaxed font-light text-base max-w-sm">
+              Crafting a legacy of purity by bridging ancient herbal wisdom with modern scientific innovation for a healthier tomorrow.
             </p>
-            <div className="flex gap-4">
-              {[Facebook, Twitter, Linkedin, Instagram].map((Icon, index) => (
-                <motion.a
-                  key={index}
-                  href="#"
-                  whileHover={{ y: -3, scale: 1.1 }}
-                  className="w-10 h-10 rounded-full bg-cream/10 flex items-center justify-center hover:bg-accent transition-colors"
+            <div className="flex gap-3 pt-2">
+              {socialLinks.map((social, i) => (
+                <a
+                  key={i}
+                  href={social.href}
+                  className="w-12 h-12 rounded-full bg-white/5 hover:bg-emerald-500 hover:text-white text-white/70 flex items-center justify-center transition-all duration-300 border border-white/10 hover:-translate-y-1 hover:shadow-[0_4px_20px_-5px_rgba(16,185,129,0.4)] group"
                 >
-                  <Icon className="h-4 w-4 text-cream" />
-                </motion.a>
+                  <social.icon className="h-5 w-5 opacity-80 group-hover:opacity-100 transition-opacity" />
+                </a>
               ))}
             </div>
           </motion.div>
 
-          {/* Quick Links */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            <h4 className="font-display text-lg font-semibold text-cream mb-6">
-              Quick Links
+          {/* Links Columns */}
+          <motion.div variants={itemVariants} className="lg:col-span-2 lg:col-start-6 space-y-6">
+            <h4 className="font-bold text-white relative inline-block text-lg font-display">
+              Explore
+              <span className="absolute -bottom-2 left-0 w-8 h-0.5 bg-emerald-500 rounded-full" />
             </h4>
             <ul className="space-y-3">
-              {quickLinks.map((link) => (
-                <li key={link.path}>
-                  <Link
-                    to={link.path}
-                    className="text-cream/70 hover:text-accent transition-colors text-sm flex items-center gap-2"
-                  >
-                    <Leaf className="h-3 w-3" />
-                    {link.name}
+              {['Home', 'Products', 'Leadership', 'Dealership'].map((item) => (
+                <li key={item}>
+                  <Link to={`/${item.toLowerCase() === 'home' ? '' : item.toLowerCase()}`} className="text-white/60 hover:text-emerald-400 transition-colors flex items-center gap-2 group text-sm font-medium">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 scale-0 group-hover:scale-100 transition-transform" />
+                    <span className="group-hover:translate-x-1 transition-transform">{item}</span>
                   </Link>
                 </li>
               ))}
             </ul>
           </motion.div>
 
-          {/* Products */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <h4 className="font-display text-lg font-semibold text-cream mb-6">
-              Our Products
+          <motion.div variants={itemVariants} className="lg:col-span-3 space-y-6">
+            <h4 className="font-bold text-white relative inline-block text-lg font-display">
+              Contact Us
+              <span className="absolute -bottom-2 left-0 w-8 h-0.5 bg-emerald-500 rounded-full" />
+            </h4>
+            <ul className="space-y-5">
+              <li className="flex gap-4 text-white/60 group items-start">
+                <div className="p-2 bg-emerald-500/10 rounded-full shrink-0 group-hover:bg-emerald-500 group-hover:text-white transition-colors text-emerald-400 border border-emerald-500/20">
+                  <MapPin className="h-4 w-4" />
+                </div>
+                <div className="flex flex-col group-hover:text-white transition-colors">
+                  <span className="text-sm font-bold text-emerald-400">LISHAA AGRO HEALTH</span>
+                  <span className="text-sm">SUDHARMA #1652, 'C' block,</span>
+                  <span className="text-sm">J.H. Patel Badavane, Davanagere-577004</span>
+                </div>
+              </li>
+              <li className="flex gap-4 text-white/60 group items-center">
+                <div className="p-2 bg-emerald-500/10 rounded-full shrink-0 group-hover:bg-emerald-500 group-hover:text-white transition-colors text-emerald-400 border border-emerald-500/20">
+                  <Phone className="h-4 w-4" />
+                </div>
+                <div className="flex flex-col group-hover:text-white transition-colors">
+                  <span className="text-xs text-emerald-400">Proprietor: MANJUNATH N.S.</span>
+                  <span className="text-sm">87622 21973</span>
+                </div>
+              </li>
+              <li className="flex gap-4 text-white/60 group items-center">
+                <div className="p-2 bg-emerald-500/10 rounded-full shrink-0 group-hover:bg-emerald-500 group-hover:text-white transition-colors text-emerald-400 border border-emerald-500/20">
+                  <Mail className="h-4 w-4" />
+                </div>
+                <span className="text-sm group-hover:text-white transition-colors">lishaaagrohealth@gmail.com</span>
+              </li>
+            </ul>
+          </motion.div>
+
+          <motion.div variants={itemVariants} className="lg:col-span-2 space-y-6">
+            <h4 className="font-bold text-white relative inline-block text-lg font-display">
+              Legal
+              <span className="absolute -bottom-2 left-0 w-8 h-0.5 bg-emerald-500 rounded-full" />
             </h4>
             <ul className="space-y-3">
-              {products.map((product) => (
-                <li key={product}>
-                  <span className="text-cream/70 text-sm flex items-center gap-2">
-                    <Leaf className="h-3 w-3" />
-                    {product}
-                  </span>
+              {['Privacy Policy', 'Terms of Service', 'Return Policy'].map((item) => (
+                <li key={item}>
+                  <Link to="#" className="text-white/60 hover:text-emerald-400 transition-colors hover:translate-x-1 inline-block text-sm font-medium">
+                    {item}
+                  </Link>
                 </li>
               ))}
             </ul>
           </motion.div>
-
-          {/* Contact Info */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            <h4 className="font-display text-lg font-semibold text-cream mb-6">
-              Contact Us
-            </h4>
-            <ul className="space-y-4">
-              <li className="flex items-start gap-3">
-                <MapPin className="h-5 w-5 text-accent mt-0.5 flex-shrink-0" />
-                <span className="text-cream/70 text-sm">
-                  Karnataka, India
-                </span>
-              </li>
-              <li className="flex items-center gap-3">
-                <Phone className="h-5 w-5 text-accent flex-shrink-0" />
-                <a
-                  href="tel:+919876543210"
-                  className="text-cream/70 text-sm hover:text-accent transition-colors"
-                >
-                  +91 98765 43210
-                </a>
-              </li>
-              <li className="flex items-center gap-3">
-                <Mail className="h-5 w-5 text-accent flex-shrink-0" />
-                <a
-                  href="mailto:info@lishaaagrohealth.com"
-                  className="text-cream/70 text-sm hover:text-accent transition-colors"
-                >
-                  info@lishaaagrohealth.com
-                </a>
-              </li>
-            </ul>
-          </motion.div>
-        </div>
+        </motion.div>
 
         {/* Bottom Bar */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="border-t border-cream/10 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4"
+          transition={{ delay: 0.5 }}
+          className="flex flex-col md:flex-row justify-between items-center gap-6 pt-8 border-t border-white/10 text-sm text-white/40 font-light"
         >
-          <p className="text-cream/60 text-sm">
-            © {new Date().getFullYear()} Lishaa Agro Health. All rights reserved.
-          </p>
-          <div className="flex gap-6">
-            <a href="#" className="text-cream/60 text-sm hover:text-accent transition-colors">
-              Privacy Policy
-            </a>
-            <a href="#" className="text-cream/60 text-sm hover:text-accent transition-colors">
-              Terms of Service
-            </a>
+          <p>&copy; {new Date().getFullYear()} Lishaa Agro Health. All rights reserved.</p>
+          <div className="flex items-center gap-2">
+            <span>Made with</span>
+            <Heart className="h-3 w-3 text-red-500 fill-current animate-pulse opacity-70" />
+            <span>for a Healthier World</span>
           </div>
         </motion.div>
       </div>
