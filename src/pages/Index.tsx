@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Link } from "react-router-dom";
-import { ArrowRight, Sparkles, GraduationCap, FlaskConical } from "lucide-react";
+import { ArrowRight, Sparkles, GraduationCap, FlaskConical, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Layout from "@/components/layout/Layout";
 import heroBg from "@/assets/hero-bg.jpg";
@@ -15,6 +15,7 @@ import addictionDropImg from "@/assets/Anti_adiction_drop.jpeg";
 import powerBoosterImg from "@/assets/PowerBooster.jpeg";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogTitle,
   DialogTrigger,
@@ -300,7 +301,7 @@ const Index = () => {
                 <DialogContent className="max-w-5xl bg-white border border-gray-100 p-0 overflow-hidden rounded-[2rem] md:rounded-[2.5rem] shadow-2xl block h-[90vh] md:h-auto gap-0">
                   <div className="flex flex-col md:flex-row h-full">
                     {/* Visual Side (Sticky/Fixed) */}
-                    <div className="w-full md:w-2/5 relative bg-black h-72 md:h-[600px] shrink-0 overflow-hidden group">
+                    <div className="w-full md:w-2/5 relative bg-black h-64 md:h-[600px] shrink-0 overflow-hidden group">
                       <img
                         src={founderImg}
                         alt="Dr. Manjunath"
@@ -316,10 +317,10 @@ const Index = () => {
                         </p>
                       </div>
 
-                      {/* Mobile Close Indicator */}
-                      <div className="absolute top-4 right-4 md:hidden z-30">
-                        <div className="w-12 h-1.5 bg-white/30 rounded-full mx-auto backdrop-blur-md" />
-                      </div>
+                      {/* Mobile Close Button (Functional & Smaller) */}
+                      <DialogClose className="absolute top-4 right-4 md:hidden z-50 p-2 bg-black/40 backdrop-blur-md rounded-full text-white hover:bg-black/60 transition-colors border border-white/10">
+                        <X className="w-4 h-4" />
+                      </DialogClose>
                     </div>
 
                     {/* Content Side (Scrollable) */}
