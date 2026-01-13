@@ -5,9 +5,8 @@ import {
   Phone,
   Mail,
   Send,
-  Clock,
-  Globe,
-  MessageSquare
+  MessageSquare,
+  Globe
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,14 +19,30 @@ const Contact = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate network request
-    await new Promise(resolve => setTimeout(resolve, 1500));
+
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      name: formData.get('name'),
+      email: formData.get('email'),
+      subject: formData.get('subject') || 'New Inquiry from Website',
+      message: formData.get('message')
+    };
+
+    // Construct simple mailto link
+    // Note: 'lishaaagrohealth@gmail.com' is the destination email
+    const mailtoLink = `mailto:lishaaagrohealth@gmail.com?subject=${encodeURIComponent(data.subject as string)}&body=${encodeURIComponent(
+      `Name: ${data.name}\nEmail: ${data.email}\n\nMessage:\n${data.message}`
+    )}`;
+
+    // Open email client
+    window.location.href = mailtoLink;
+
     toast({
-      title: "Message Received 🌿",
-      description: "Thank you for contacting Lishaa Agro Health. We will get back to you shortly.",
+      title: "Opening Email Client... 📧",
+      description: "Please hit 'Send' in your mail app to complete the submission.",
       duration: 5000,
     });
     setIsSubmitting(false);
@@ -47,7 +62,7 @@ const Contact = () => {
       icon: Phone,
       title: "Direct Line",
       details: ["+91 87622 21973"],
-      sub: "Proprietor: MANJUNATH N.S."
+      sub: "Proprietor: Dr. Manjunath N.S."
     },
     {
       icon: Mail,
@@ -61,54 +76,69 @@ const Contact = () => {
     <Layout>
       <div className="min-h-screen bg-[#F9FAF9] selection:bg-emerald-500 selection:text-white pb-20">
 
-        {/* Simple & Clean Hero */}
-        <section className="relative h-[60vh] flex items-center justify-center bg-[#0d2e20] overflow-hidden">
+        {/* Premium Hero Section */}
+        <section className="relative min-h-[80vh] flex items-center justify-center bg-[#0d2e20] overflow-hidden">
           {/* Background Image Layer */}
-          <div className="absolute inset-0 opacity-30 mix-blend-overlay">
+          <div className="absolute inset-0 z-0">
+            <div className="absolute inset-0 bg-black/70 z-10" />
             <img
               src="https://images.unsplash.com/photo-1577563908411-5077b6dc7624?q=80&w=2070&auto=format&fit=crop"
               alt="Contact Support Team"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover opacity-50 grayscale-[20%]"
             />
           </div>
 
-          <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
-
           {/* Animated Background Elements */}
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 100, repeat: Infinity, ease: "linear" }}
-            className="absolute -top-[20%] -right-[20%] w-[800px] h-[800px] bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"
-          />
-          <motion.div
-            animate={{ rotate: -360 }}
-            transition={{ duration: 120, repeat: Infinity, ease: "linear" }}
-            className="absolute -bottom-[20%] -left-[20%] w-[600px] h-[600px] bg-lime-400/5 rounded-full blur-3xl pointer-events-none"
-          />
+          <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+            <motion.div
+              animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.4, 0.2] }}
+              transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute -top-[20%] right-[10%] w-[600px] h-[600px] bg-emerald-500/20 rounded-full blur-[100px]"
+            />
+            <motion.div
+              animate={{ scale: [1, 1.1, 1], opacity: [0.1, 0.3, 0.1] }}
+              transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+              className="absolute -bottom-[20%] -left-[10%] w-[500px] h-[500px] bg-lime-400/10 rounded-full blur-[80px]"
+            />
+          </div>
 
-          <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-            <motion.span
+          <div className="relative z-20 text-center px-4 max-w-4xl mx-auto pt-32">
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="inline-block py-1 px-3 rounded-full bg-white/10 text-emerald-300 text-sm font-bold tracking-widest uppercase mb-4 border border-white/5 backdrop-blur-md"
-            >
-              Contact Us
-            </motion.span>
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="font-display text-5xl md:text-7xl font-bold text-white mb-6 leading-tight"
-            >
-              Let's Start a <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-lime-300">
-                Conversation
-              </span>
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
+              className="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-white/5 backdrop-blur-md border border-white/10 mb-6"
+            >
+              <MessageSquare className="h-4 w-4 text-emerald-400" />
+              <span className="text-emerald-50 text-[10px] tracking-[0.2em] font-bold uppercase">Get in Touch</span>
+            </motion.div>
+
+            <h1 className="font-display text-4xl md:text-7xl font-bold text-white mb-6 leading-[1.1] tracking-tight drop-shadow-lg">
+              <div className="overflow-hidden">
+                <motion.span
+                  initial={{ y: "100%" }}
+                  animate={{ y: 0 }}
+                  transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+                  className="block"
+                >
+                  Let's Start a
+                </motion.span>
+              </div>
+              <div className="overflow-hidden">
+                <motion.span
+                  initial={{ y: "100%" }}
+                  animate={{ y: 0 }}
+                  transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
+                  className="block text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 via-white to-emerald-200"
+                >
+                  Conversation.
+                </motion.span>
+              </div>
+            </h1>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
               className="text-white/70 text-lg md:text-xl font-light"
             >
               Have a question about our herbal products or research? We're here to help.
@@ -166,19 +196,19 @@ const Contact = () => {
                 <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-6 relative z-10">
                   <div className="space-y-2">
                     <label className="text-sm font-semibold text-gray-700 ml-1">Your Name</label>
-                    <Input required placeholder="John Doe" className="h-14 rounded-2xl bg-gray-50 border-transparent focus:bg-white focus:border-emerald-500/50 transition-all font-medium" />
+                    <Input name="name" required placeholder="John Doe" className="h-14 rounded-2xl bg-gray-50 border-transparent focus:bg-white focus:border-emerald-500/50 transition-all font-medium" />
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-semibold text-gray-700 ml-1">Email Address</label>
-                    <Input required type="email" placeholder="john@example.com" className="h-14 rounded-2xl bg-gray-50 border-transparent focus:bg-white focus:border-emerald-500/50 transition-all font-medium" />
+                    <Input name="email" required type="email" placeholder="john@example.com" className="h-14 rounded-2xl bg-gray-50 border-transparent focus:bg-white focus:border-emerald-500/50 transition-all font-medium" />
                   </div>
                   <div className="space-y-2 md:col-span-2">
                     <label className="text-sm font-semibold text-gray-700 ml-1">Subject</label>
-                    <Input placeholder="Inquiry about Herbal Products..." className="h-14 rounded-2xl bg-gray-50 border-transparent focus:bg-white focus:border-emerald-500/50 transition-all font-medium" />
+                    <Input name="subject" placeholder="Inquiry about Herbal Products..." className="h-14 rounded-2xl bg-gray-50 border-transparent focus:bg-white focus:border-emerald-500/50 transition-all font-medium" />
                   </div>
                   <div className="space-y-2 md:col-span-2">
                     <label className="text-sm font-semibold text-gray-700 ml-1">Message</label>
-                    <Textarea required placeholder="How can we help you today?" className="min-h-[150px] rounded-2xl bg-gray-50 border-transparent focus:bg-white focus:border-emerald-500/50 transition-all font-medium resize-none p-4" />
+                    <Textarea name="message" required placeholder="How can we help you today?" className="min-h-[150px] rounded-2xl bg-gray-50 border-transparent focus:bg-white focus:border-emerald-500/50 transition-all font-medium resize-none p-4" />
                   </div>
 
                   <div className="md:col-span-2 pt-4">

@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin, ArrowRight, Heart, Leaf } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -18,7 +18,16 @@ const Footer = () => {
     });
   };
 
-  const containerVariants = {
+  const handleComingSoon = (e: React.MouseEvent, title: string) => {
+    e.preventDefault();
+    toast({
+      title: "Coming Soon ✨",
+      description: `The ${title} page is currently under construction. Stay tuned!`,
+      duration: 3000,
+    });
+  };
+
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -29,7 +38,7 @@ const Footer = () => {
     },
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 10 },
     visible: {
       opacity: 1,
@@ -129,7 +138,8 @@ const Footer = () => {
                 <a
                   key={i}
                   href={social.href}
-                  className="w-12 h-12 rounded-full bg-white/5 hover:bg-emerald-500 hover:text-white text-white/70 flex items-center justify-center transition-all duration-300 border border-white/10 hover:-translate-y-1 hover:shadow-[0_4px_20px_-5px_rgba(16,185,129,0.4)] group"
+                  onClick={(e) => handleComingSoon(e, 'Social Media')}
+                  className="w-12 h-12 rounded-full bg-white/5 hover:bg-emerald-500 hover:text-white text-white/70 flex items-center justify-center transition-all duration-300 border border-white/10 hover:-translate-y-1 hover:shadow-[0_4px_20px_-5px_rgba(16,185,129,0.4)] group cursor-pointer"
                 >
                   <social.icon className="h-5 w-5 opacity-80 group-hover:opacity-100 transition-opacity" />
                 </a>
@@ -144,12 +154,24 @@ const Footer = () => {
               <span className="absolute -bottom-2 left-0 w-8 h-0.5 bg-emerald-500 rounded-full" />
             </h4>
             <ul className="space-y-3">
-              {['Home', 'Products', 'Leadership', 'Dealership'].map((item) => (
+              <li key="Home">
+                <Link to="/" className="text-white/60 hover:text-emerald-400 transition-colors flex items-center gap-2 group text-sm font-medium">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 scale-0 group-hover:scale-100 transition-transform" />
+                  <span className="group-hover:translate-x-1 transition-transform">Home</span>
+                </Link>
+              </li>
+              <li key="Products">
+                <Link to="/products" className="text-white/60 hover:text-emerald-400 transition-colors flex items-center gap-2 group text-sm font-medium">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 scale-0 group-hover:scale-100 transition-transform" />
+                  <span className="group-hover:translate-x-1 transition-transform">Products</span>
+                </Link>
+              </li>
+              {['Leadership', 'Dealership'].map((item) => (
                 <li key={item}>
-                  <Link to={`/${item.toLowerCase() === 'home' ? '' : item.toLowerCase()}`} className="text-white/60 hover:text-emerald-400 transition-colors flex items-center gap-2 group text-sm font-medium">
+                  <a href="#" onClick={(e) => handleComingSoon(e, item)} className="text-white/60 hover:text-emerald-400 transition-colors flex items-center gap-2 group text-sm font-medium cursor-pointer">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 scale-0 group-hover:scale-100 transition-transform" />
                     <span className="group-hover:translate-x-1 transition-transform">{item}</span>
-                  </Link>
+                  </a>
                 </li>
               ))}
             </ul>
@@ -172,19 +194,24 @@ const Footer = () => {
                 </div>
               </li>
               <li className="flex gap-4 text-white/60 group items-center">
-                <div className="p-2 bg-emerald-500/10 rounded-full shrink-0 group-hover:bg-emerald-500 group-hover:text-white transition-colors text-emerald-400 border border-emerald-500/20">
-                  <Phone className="h-4 w-4" />
-                </div>
-                <div className="flex flex-col group-hover:text-white transition-colors">
-                  <span className="text-xs text-emerald-400">Proprietor: MANJUNATH N.S.</span>
-                  <span className="text-sm">87622 21973</span>
-                </div>
+                <a href="tel:+918762221973" className="flex gap-4 items-center hover:text-white transition-colors w-full">
+                  <div className="p-2 bg-emerald-500/10 rounded-full shrink-0 group-hover:bg-emerald-500 group-hover:text-white transition-colors text-emerald-400 border border-emerald-500/20">
+                    <Phone className="h-4 w-4" />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-sm font-bold text-emerald-400 uppercase tracking-wider mb-1">Proprietor</span>
+                    <span className="text-base font-semibold text-white">Dr. Manjunath N.S.</span>
+                    <span className="text-sm text-white/70">87622 21973</span>
+                  </div>
+                </a>
               </li>
               <li className="flex gap-4 text-white/60 group items-center">
-                <div className="p-2 bg-emerald-500/10 rounded-full shrink-0 group-hover:bg-emerald-500 group-hover:text-white transition-colors text-emerald-400 border border-emerald-500/20">
-                  <Mail className="h-4 w-4" />
-                </div>
-                <span className="text-sm group-hover:text-white transition-colors">lishaaagrohealth@gmail.com</span>
+                <a href="mailto:lishaaagrohealth@gmail.com" className="flex gap-4 items-center hover:text-white transition-colors w-full">
+                  <div className="p-2 bg-emerald-500/10 rounded-full shrink-0 group-hover:bg-emerald-500 group-hover:text-white transition-colors text-emerald-400 border border-emerald-500/20">
+                    <Mail className="h-4 w-4" />
+                  </div>
+                  <span className="text-sm">lishaaagrohealth@gmail.com</span>
+                </a>
               </li>
             </ul>
           </motion.div>

@@ -1,11 +1,10 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Leaf, Star, Check, ShoppingBag, Info, X } from "lucide-react";
+import { Search, Filter, ShoppingCart, Star, X, Check, ChevronDown, ArrowRight, Info, Leaf, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Layout from "@/components/layout/Layout";
 import productsHero from "@/assets/products-hero.jpg";
-import { useScroll, useTransform } from "framer-motion";
-import { useRef, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import {
   Dialog,
@@ -16,12 +15,21 @@ import {
   DialogTrigger,
   DialogClose,
 } from "@/components/ui/dialog";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 // Images (using placeholders where necessary if assets not perfectly named, but trying best guess)
 import toothpasteImg from "@/assets/ToothPaste.jpeg";
 import greenTeaImg from "@/assets/GreenTea_Tablets.jpeg";
 import mattressImg from "@/assets/Mattrices_and_Pillowpad.jpeg";
 import addictionDropImg from "@/assets/Anti_adiction_drop.jpeg";
+import powerBoosterImg from "@/assets/PowerBooster.jpeg";
 
 const products = [
   {
@@ -75,6 +83,19 @@ const products = [
     tag: "Herbal Care",
     category: "Herbal Care",
     benefits: ["Willpower Support", "Non-Addictive", "Detoxification"]
+  },
+  {
+    id: 5,
+    name: "Power Booster",
+    description: "Advanced herbal formula for enhanced vitality, strength, and immune support.",
+    longDescription: "Recharge your life with Power Booster. A scientifically crafted blend of potent herbs like Ashwagandha and Ginseng to boost energy levels, improve stamina, and strengthen immunity naturally. Feel the difference in your daily vitality.",
+    price: "₹1299",
+    image: powerBoosterImg,
+    rating: 4.9,
+    reviews: 62,
+    tag: "New Arrival",
+    category: "Wellness",
+    benefits: ["Enhances Vitality", "Boosts Stamina", "Immune Support"]
   }
 ];
 
@@ -100,56 +121,86 @@ const Products = () => {
     });
   };
 
+  const categories = ["All", "Herbal Care", "Wellness", "Lifestyle"];
+
   return (
     <Layout>
       {/* Premium Hero Section - Green & White Theme */}
-      <div className="relative h-[60vh] overflow-hidden flex items-center justify-center bg-[#0d2e20]" ref={containerRef}>
-        {/* Background Image Layer */}
-        <div className="absolute inset-0 opacity-40 mix-blend-overlay">
+      <section className="relative min-h-[90vh] overflow-hidden flex items-center justify-center bg-[#0d2e20]" ref={containerRef}>
+        {/* Background Image Layer - Parallax Effect */}
+        <motion.div
+          style={{ y }}
+          className="absolute inset-0 z-0"
+        >
+          <div className="absolute inset-0 bg-black/70 z-10" />
           <img
             src={productsHero}
             alt="Lishaa Products Collection"
-            className="w-full h-full object-cover scale-105"
+            className="w-full h-full object-cover scale-110 opacity-70"
+          />
+        </motion.div>
+
+        {/* Ambient Gradient Blobs - Consistent with Index */}
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+          <motion.div
+            animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -top-[20%] -right-[10%] w-[600px] h-[600px] bg-emerald-500/20 rounded-full blur-[100px]"
+          />
+          <motion.div
+            animate={{ scale: [1, 1.1, 1], opacity: [0.2, 0.4, 0.2] }}
+            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+            className="absolute -bottom-[20%] -left-[10%] w-[500px] h-[500px] bg-lime-400/10 rounded-full blur-[80px]"
           />
         </div>
 
-        {/* Animated Background Elements */}
-        <div className="absolute inset-0 opacity-20 pointer-events-none">
-          <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-emerald-500/20 rounded-full blur-[120px] animate-pulse" />
-          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-lime-400/10 rounded-full blur-[100px]" />
-        </div>
-
-        {/* Background Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-950/40 to-emerald-950/90" />
-
-        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto mt-16">
+        {/* Content Container */}
+        <div className="container relative z-20 px-4 pt-32 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="inline-flex items-center gap-2 py-1 px-4 rounded-full bg-white/10 border border-white/20 text-emerald-300 text-sm font-semibold tracking-wider uppercase mb-6 backdrop-blur-md"
+            className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-white/5 backdrop-blur-md border border-white/10 mb-8"
           >
-            <Leaf className="h-4 w-4" />
-            Our Collection
+            <Leaf className="h-4 w-4 text-emerald-400 animate-pulse" />
+            <span className="text-emerald-50 text-[10px] tracking-[0.2em] font-bold uppercase">Our Collection</span>
           </motion.div>
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="font-display text-5xl md:text-7xl font-bold text-white mb-6 drop-shadow-2xl leading-tight"
-          >
-            Curated for <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-lime-300">Wellness</span>
-          </motion.h1>
+
+          {/* ... existing Hero content ... */}
+          <h1 className="font-display text-4xl md:text-7xl font-bold text-white mb-6 tracking-tight leading-[1.1]">
+            <div className="overflow-hidden">
+              <motion.span
+                initial={{ y: "100%" }}
+                animate={{ y: 0 }}
+                transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+
+                className="block"
+              >
+                Curated for
+              </motion.span>
+            </div>
+            <div className="overflow-hidden">
+              <motion.span
+                initial={{ y: "100%" }}
+                animate={{ y: 0 }}
+                transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
+                className="block text-white pb-3 drop-shadow-md"
+              >
+                Pure Wellness
+              </motion.span>
+            </div>
+          </h1>
+
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
             className="text-white/80 text-lg md:text-xl font-light max-w-2xl mx-auto leading-relaxed"
           >
             Discover our exclusive range of natural products, scientifically formulated to enhance your daily life.
           </motion.p>
         </div>
-      </div>
+      </section>
 
       {/* Main Product Grid */}
       <section className="py-24 px-4 lg:px-8 bg-background relative z-20 -mt-12">
@@ -157,8 +208,10 @@ const Products = () => {
           {/* Filter/Sort Header */}
           <div className="flex flex-col md:flex-row justify-between items-center mb-12 pb-6 border-b border-border/40 gap-4">
             <p className="text-muted-foreground">Showing <span className="text-foreground font-semibold">{filteredProducts.length}</span> premium products</p>
-            <div className="flex gap-2">
-              {['All', 'Herbal Care', 'Wellness', 'Lifestyle'].map(cat => (
+
+            {/* Desktop Filters */}
+            <div className="hidden md:flex gap-2">
+              {categories.map(cat => (
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
@@ -170,6 +223,41 @@ const Products = () => {
                   {cat}
                 </button>
               ))}
+            </div>
+
+            {/* Mobile Filter Sheet */}
+            <div className="md:hidden w-full">
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="outline" className="w-full gap-2 rounded-full border-emerald-200 text-emerald-800">
+                    <Filter className="w-4 h-4" /> Filter Products
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="bottom" className="rounded-t-[2rem]">
+                  <SheetHeader className="mb-6 text-left">
+                    <SheetTitle className="font-display text-2xl text-emerald-950">Filter Collection</SheetTitle>
+                    <SheetDescription>Select a category to view specific products.</SheetDescription>
+                  </SheetHeader>
+                  <div className="flex flex-col gap-3">
+                    {categories.map(cat => (
+                      <button
+                        key={cat}
+                        onClick={() => {
+                          setActiveCategory(cat);
+                          // Optional: Close sheet logic if controlled, but default behavior is fine for now or we rely on user clicking outside/close
+                        }}
+                        className={`px-4 py-4 rounded-xl text-lg font-medium transition-all text-left flex justify-between items-center ${activeCategory === cat
+                          ? 'bg-emerald-50 text-emerald-900 border border-emerald-200'
+                          : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
+                          }`}
+                      >
+                        {cat}
+                        {activeCategory === cat && <Check className="w-5 h-5 text-emerald-600" />}
+                      </button>
+                    ))}
+                  </div>
+                </SheetContent>
+              </Sheet>
             </div>
           </div>
 
@@ -221,7 +309,7 @@ const Products = () => {
                   </div>
 
                   {/* Content Section */}
-                  <div className="w-full md:w-3/5 p-8 flex flex-col justify-between">
+                  <div className="w-full md:w-3/5 p-5 md:p-8 flex flex-col justify-between">
                     <div>
                       <div className="flex justify-between items-start mb-2">
                         <div className="flex items-center gap-1 text-yellow-500">
@@ -251,25 +339,25 @@ const Products = () => {
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between mt-auto pt-6 border-t border-border/40">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between mt-auto pt-6 border-t border-border/40 gap-4">
                       <div className="flex flex-col">
                         <span className="text-[10px] text-muted-foreground/80 uppercase tracking-widest font-semibold mb-1">MRP Price</span>
                         <div className="flex items-baseline gap-1">
-                          <span className="font-display text-2xl font-bold text-foreground">{product.price}</span>
+                          <span className="font-serif text-3xl font-extrabold text-emerald-800 tracking-wide">{product.price}</span>
                         </div>
                       </div>
-                      <div className="flex gap-3">
+                      <div className="flex gap-3 flex-wrap">
                         <DialogTrigger asChild>
                           <Button
                             variant="outline"
-                            className="rounded-full border-primary/20 hover:border-primary hover:text-primary transition-all"
+                            className="rounded-full border-primary/20 hover:border-primary hover:text-primary transition-all flex-1 sm:flex-none"
                             onClick={() => setSelectedProduct(product)}
                           >
                             Details
                           </Button>
                         </DialogTrigger>
                         <Button
-                          className="rounded-full bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20 px-6"
+                          className="rounded-full bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20 px-6 flex-1 sm:flex-none"
                           onClick={() => handleBuyNow(product.name)}
                         >
                           <ShoppingBag className="mr-2 h-4 w-4" /> Buy Now
@@ -281,15 +369,15 @@ const Products = () => {
               ))}
             </motion.div>
 
-            <DialogContent className="max-w-4xl rounded-[2rem] p-0 overflow-hidden bg-white border-none shadow-2xl">
+            <DialogContent className="max-w-4xl w-[95vw] rounded-[2rem] p-0 overflow-hidden bg-white border-none shadow-2xl h-[85vh] md:h-auto flex flex-col">
               {selectedProduct && (
-                <div className="flex flex-col md:flex-row h-full">
+                <div className="flex flex-col md:flex-row h-full overflow-hidden">
                   {/* Modal Image Side */}
-                  <div className="w-full md:w-1/2 bg-gradient-to-br from-secondary/5 to-secondary/10 p-8 flex items-center justify-center relative">
+                  <div className="w-full md:w-1/2 bg-gradient-to-br from-secondary/5 to-secondary/10 p-8 flex items-center justify-center relative shrink-0 h-64 md:h-auto">
                     <img
                       src={selectedProduct.image}
                       alt={selectedProduct.name}
-                      className="max-h-[300px] w-auto object-contain drop-shadow-2xl mix-blend-multiply"
+                      className="max-h-full w-auto object-contain drop-shadow-2xl mix-blend-multiply"
                     />
                     {/* Floating Tag */}
                     <div className="absolute top-6 left-6">
@@ -300,49 +388,52 @@ const Products = () => {
                   </div>
 
                   {/* Modal Content Side */}
-                  <div className="w-full md:w-1/2 p-10 flex flex-col bg-white">
-                    <DialogHeader className="mb-6 text-left">
-                      <div className="flex items-center gap-2 mb-2 text-yellow-500">
-                        <Star className="h-4 w-4 fill-current" />
-                        <span className="text-sm font-bold text-foreground">{selectedProduct.rating}</span>
-                        <span className="text-xs text-muted-foreground">({selectedProduct.reviews} verified reviews)</span>
-                      </div>
+                  <div className="w-full md:w-1/2 flex flex-col bg-white flex-1 min-h-0 overflow-hidden">
+                    {/* Scrollable Content Area */}
+                    <div className="flex-1 overflow-y-auto p-6 md:p-10">
+                      <DialogHeader className="mb-6 text-left">
+                        <div className="flex items-center gap-2 mb-2 text-yellow-500">
+                          <Star className="h-4 w-4 fill-current" />
+                          <span className="text-sm font-bold text-foreground">{selectedProduct.rating}</span>
+                          <span className="text-xs text-muted-foreground">({selectedProduct.reviews} verified reviews)</span>
+                        </div>
 
-                      <DialogTitle className="font-display text-3xl md:text-4xl font-bold text-foreground leading-tight mb-2">
-                        {selectedProduct.name}
-                      </DialogTitle>
-                      <DialogDescription className="text-base text-muted-foreground leading-relaxed">
-                        {selectedProduct.longDescription || selectedProduct.description}
-                      </DialogDescription>
-                    </DialogHeader>
+                        <DialogTitle className="font-display text-3xl md:text-4xl font-bold text-foreground leading-tight mb-2">
+                          {selectedProduct.name}
+                        </DialogTitle>
+                        <DialogDescription className="text-base text-muted-foreground leading-relaxed">
+                          {selectedProduct.longDescription || selectedProduct.description}
+                        </DialogDescription>
+                      </DialogHeader>
 
-                    <div className="my-6 space-y-4 bg-secondary/5 p-6 rounded-2xl border border-secondary/10">
-                      <h4 className="font-bold text-sm text-foreground uppercase tracking-wider flex items-center gap-2">
-                        <Leaf className="h-4 w-4 text-primary" /> Key Benefits
-                      </h4>
-                      <div className="grid grid-cols-1 gap-2">
-                        {selectedProduct.benefits.map((benefit, i) => (
-                          <div key={i} className="flex items-center gap-3 text-sm text-foreground/80">
-                            <div className="h-5 w-5 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
-                              <Check className="h-3 w-3 text-accent" />
+                      <div className="my-6 space-y-4 bg-secondary/5 p-6 rounded-2xl border border-secondary/10">
+                        <h4 className="font-bold text-sm text-foreground uppercase tracking-wider flex items-center gap-2">
+                          <Leaf className="h-4 w-4 text-primary" /> Key Benefits
+                        </h4>
+                        <div className="grid grid-cols-1 gap-2">
+                          {selectedProduct.benefits.map((benefit, i) => (
+                            <div key={i} className="flex items-center gap-3 text-sm text-foreground/80">
+                              <div className="h-5 w-5 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
+                                <Check className="h-3 w-3 text-accent" />
+                              </div>
+                              <span>{benefit}</span>
                             </div>
-                            <span>{benefit}</span>
-                          </div>
-                        ))}
+                          ))}
+                        </div>
                       </div>
                     </div>
 
-                    <div className="mt-auto flex items-center justify-between pt-6 border-t border-border">
-                      <div>
-                        <p className="text-xs text-muted-foreground uppercase font-semibold tracking-wide mb-1">Total Price</p>
-                        <p className="font-display text-3xl font-bold text-primary">{selectedProduct.price}</p>
+                    {/* Fixed Footer Area */}
+                    <div className="shrink-0 p-6 md:px-10 md:pb-10 md:pt-6 border-t border-border bg-white z-10 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+                      <div className="text-center sm:text-left flex flex-row sm:flex-col items-center sm:items-start justify-between sm:justify-center">
+                        <p className="text-xs text-muted-foreground uppercase font-semibold tracking-wide mb-0 sm:mb-1 mr-2 sm:mr-0">Total Price</p>
+                        <p className="font-serif text-3xl md:text-4xl font-extrabold text-emerald-800 tracking-wide">{selectedProduct.price}</p>
                       </div>
                       <Button
                         size="lg"
-                        className="rounded-full bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20 px-8 py-6 text-lg transition-all hover:scale-105 active:scale-95"
+                        className="rounded-full bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20 px-8 py-4 md:py-6 text-lg transition-all hover:scale-105 active:scale-95 w-full sm:w-auto"
                         onClick={() => {
                           handleBuyNow(selectedProduct.name);
-                          // Optional: Close dialog here if needed, but usually users might want to keep browsing or see confirmation
                         }}
                       >
                         <ShoppingBag className="mr-2 h-5 w-5" /> Add to Cart
