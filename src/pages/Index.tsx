@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Link } from "react-router-dom";
@@ -8,11 +8,7 @@ import { Button } from "@/components/ui/button";
 import Layout from "@/components/layout/Layout";
 import heroBg from "@/assets/hero-bg.jpg";
 import founderImg from "@/assets/Founder.jpeg";
-import toothpasteImg from "@/assets/ToothPaste.jpeg";
-import greenTeaImg from "@/assets/GreenTea_Tablets.jpeg";
-import mattressImg from "@/assets/Mattrices_and_Pillowpad.jpeg";
-import addictionDropImg from "@/assets/Anti_adiction_drop.jpeg";
-import powerBoosterImg from "@/assets/PowerBooster.jpeg";
+import { supabase, Product } from "@/lib/supabase";
 import {
   Dialog,
   DialogClose,
@@ -45,48 +41,30 @@ const Index = () => {
     mouseY.set((e.clientY - top) / height * 2 - 1);
   }
 
-  const products = [
-    {
-      id: 1,
-      name: "Herbal Toothpaste",
-      description: "Complete dental care with Meswak & Babool for fresh breath.",
-      price: "₹135",
-      image: toothpasteImg,
-      tag: "Best Seller"
-    },
-    {
-      id: 2,
-      name: "Razata Green Tea Tablets",
-      description: "Premium green tea extract for metabolism and immunity.",
-      price: "₹699",
-      image: greenTeaImg,
-      tag: "Trending"
-    },
-    {
-      id: 3,
-      name: "Bio Magnetic Mattress",
-      description: "Therapeutic mattress for deep sleep and pain relief.",
-      price: "₹5499",
-      image: mattressImg,
-      tag: "Premium"
-    },
-    {
-      id: 4,
-      name: "Anti-Addiction Drops",
-      description: "Herbal support to help overcome dependency naturally.",
-      price: "₹699",
-      image: addictionDropImg,
-      tag: "Natural Care"
-    },
-    {
-      id: 5,
-      name: "Power Booster",
-      description: "Advanced herbal formula for enhanced vitality and strength.",
-      price: "₹1299",
-      image: powerBoosterImg,
-      tag: "New Arrival"
+  // Fetch products from Supabase
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loadingProducts, setLoadingProducts] = useState(true);
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(5);
+
+      if (error) throw error;
+      setProducts(data || []);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    } finally {
+      setLoadingProducts(false);
     }
-  ];
+  };
 
   useEffect(() => {
     // GSAP Animations
@@ -274,10 +252,34 @@ const Index = () => {
         <div className="container mx-auto px-4 relative z-10">
           <div className="flex flex-col md:flex-row items-center gap-12 md:gap-20">
             {/* Image Side */}
-            <div className="flex-1 relative group">
-              <div className="absolute -inset-4 bg-gradient-to-tr from-emerald-500 to-lime-500 rounded-full opacity-20 blur-2xl group-hover:opacity-30 transition-opacity" />
-              <div className="relative w-72 h-72 md:w-96 md:h-96 mx-auto rounded-full p-2 bg-white/5 backdrop-blur-sm border border-white/10">
-                <img src={founderImg} alt="Dr. Manjunath" className="w-full h-full object-cover rounded-full" />
+            {/* Image Side - Clean & Elegant Design */}
+            <div className="flex-1 relative group flex justify-center">
+              <div className="relative w-72 h-72 md:w-96 md:h-96">
+                {/* Soft/Subtle Pulsing Glow Background */}
+                <motion.div
+                  animate={{ opacity: [0.5, 0.8, 0.5], scale: [1, 1.02, 1] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute inset-0 rounded-full bg-emerald-600/20 blur-2xl"
+                />
+
+                {/* Main Image Container with Clean Border */}
+                <div className="relative w-full h-full rounded-full p-1.5 bg-gradient-to-b from-emerald-500/50 to-emerald-900/50 backdrop-blur-sm border border-emerald-500/30 shadow-2xl">
+                  <div className="w-full h-full rounded-full overflow-hidden border-4 border-[#0a1f16] relative z-10">
+                    <img src={founderImg} alt="Dr. Manjunath" className="w-full h-full object-cover scale-100 group-hover:scale-110 transition-transform duration-700 ease-in-out" />
+                  </div>
+                </div>
+
+                {/* Visionary Badge - Clean & Professional */}
+                <motion.div
+                  initial={{ y: 20, opacity: 0 }}
+                  whileInView={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.3 }}
+                  className="absolute bottom-6 right-0 md:right-4 z-20"
+                >
+                  <div className="bg-emerald-600 text-white text-[10px] md:text-xs font-bold tracking-[0.2em] px-5 py-2 rounded-full shadow-lg ring-4 ring-[#0a1f16] uppercase transform group-hover:translate-y-[-4px] transition-transform duration-300">
+                    Visionary
+                  </div>
+                </motion.div>
               </div>
             </div>
 
@@ -448,7 +450,7 @@ const Index = () => {
             {products.map((product) => (
               <div key={product.id} className="group bg-white rounded-3xl p-4 hover:shadow-xl transition-all duration-300">
                 <div className="aspect-[4/5] rounded-2xl bg-gray-100 mb-4 overflow-hidden relative">
-                  <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <img src={product.image_url} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-emerald-800 shadow-sm">
                     {product.tag}
                   </div>

@@ -1,11 +1,12 @@
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Search, Filter, ShoppingCart, Star, X, Check, ChevronDown, ArrowRight, Info, Leaf, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Layout from "@/components/layout/Layout";
 import productsHero from "@/assets/products-hero.jpg";
 import { useToast } from "@/hooks/use-toast";
+import { supabase, Product } from "@/lib/supabase";
 import {
   Dialog,
   DialogContent,
@@ -24,81 +25,6 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-// Images (using placeholders where necessary if assets not perfectly named, but trying best guess)
-import toothpasteImg from "@/assets/ToothPaste.jpeg";
-import greenTeaImg from "@/assets/GreenTea_Tablets.jpeg";
-import mattressImg from "@/assets/Mattrices_and_Pillowpad.jpeg";
-import addictionDropImg from "@/assets/Anti_adiction_drop.jpeg";
-import powerBoosterImg from "@/assets/PowerBooster.jpeg";
-
-const products = [
-  {
-    id: 1,
-    name: "Herbal Toothpaste",
-    description: "Complete dental care with the power of Meswak & Babool. Protects against cavities while ensuring long-lasting fresh breath.",
-    longDescription: "Our Herbal Toothpaste is a blend of traditional wisdom and modern oral care. Enriched with Meswak and Babool, it fights bacteria, strengthens gums, and ensures freshness that lasts all day. No harmful chemicals, just pure nature for your smile.",
-    price: "₹135",
-    image: toothpasteImg,
-    rating: 4.8,
-    reviews: 128,
-    tag: "Best Seller",
-    category: "Herbal Care",
-    benefits: ["Cavity Protection", "Gum Health", "Natural Freshness"]
-  },
-  {
-    id: 2,
-    name: "Razata Green Tea Tablets",
-    description: "Concentrated green tea extract for metabolism and immunity. The improved way to consume your daily antioxidants.",
-    longDescription: "Experience the benefits of green tea in a convenient tablet form. Razata Green Tea Tablets are packed with antioxidants to boost your metabolism, aid in weight management, and support a healthy immune system. 100% natural extract.",
-    price: "₹699",
-    image: greenTeaImg,
-    rating: 4.9,
-    reviews: 85,
-    tag: "Trending",
-    category: "Wellness",
-    benefits: ["Metabolism Boost", "High Antioxidants", "Daily Detox"]
-  },
-  {
-    id: 3,
-    name: "Bio Magnetic Mattress",
-    description: "Therapeutic mattress & pillow pad designed with bio-magnetic technology to improve sleep quality and reduce body pain.",
-    longDescription: "Revolutionize your sleep with our Bio Magnetic Mattress. Designed to improve blood circulation and alleviate body pain, it uses advanced bio-magnetic technology to ensure deep, restorative sleep. Wake up feeling refreshed and pain-free.",
-    price: "₹5499",
-    image: mattressImg,
-    rating: 4.7,
-    reviews: 210,
-    tag: "Premium",
-    category: "Lifestyle",
-    benefits: ["Pain Relief", "Deep Sleep", "Bio-Magnetic Tech"]
-  },
-  {
-    id: 4,
-    name: "Anti-Addiction Drops",
-    description: "A secure, herbal support system to help overcome dependency and strengthen willpower naturally.",
-    longDescription: "Formulated to support individuals in overcoming dependencies, our Anti-Addiction Drops are a safe, herbal solution. They help reduce cravings, manage withdrawal symptoms, and strengthen willpower, promoting a healthier, addiction-free life.",
-    price: "₹699",
-    image: addictionDropImg,
-    rating: 4.6,
-    reviews: 94,
-    tag: "Herbal Care",
-    category: "Herbal Care",
-    benefits: ["Willpower Support", "Non-Addictive", "Detoxification"]
-  },
-  {
-    id: 5,
-    name: "Power Booster",
-    description: "Advanced herbal formula for enhanced vitality, strength, and immune support.",
-    longDescription: "Recharge your life with Power Booster. A scientifically crafted blend of potent herbs like Ashwagandha and Ginseng to boost energy levels, improve stamina, and strengthen immunity naturally. Feel the difference in your daily vitality.",
-    price: "₹1299",
-    image: powerBoosterImg,
-    rating: 4.9,
-    reviews: 62,
-    tag: "New Arrival",
-    category: "Wellness",
-    benefits: ["Enhances Vitality", "Boosts Stamina", "Immune Support"]
-  }
-];
-
 const Products = () => {
   const containerRef = useRef(null);
   const { toast } = useToast();
@@ -107,8 +33,39 @@ const Products = () => {
     offset: ["start start", "end start"]
   });
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
-  const [selectedProduct, setSelectedProduct] = useState(products[0]);
+
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [activeCategory, setActiveCategory] = useState("All");
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setProducts(data || []);
+      if (data && data.length > 0) {
+        setSelectedProduct(data[0]);
+      }
+    } catch (error: any) {
+      console.error('Error fetching products:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load products. Please refresh the page.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const filteredProducts = activeCategory === "All"
     ? products
@@ -122,6 +79,19 @@ const Products = () => {
   };
 
   const categories = ["All", "Herbal Care", "Wellness", "Lifestyle"];
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="min-h-screen flex items-center justify-center bg-gray-50">
+          <div className="text-center">
+            <div className="w-16 h-16 border-4 border-emerald-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading products...</p>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
@@ -287,7 +257,7 @@ const Products = () => {
                     {/* Full width/height with object-cover */}
                     <div className="w-full h-64 md:h-full">
                       <img
-                        src={product.image}
+                        src={product.image_url}
                         alt={product.name}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                       />
@@ -375,7 +345,7 @@ const Products = () => {
                   {/* Modal Image Side */}
                   <div className="w-full md:w-1/2 bg-gradient-to-br from-secondary/5 to-secondary/10 p-8 flex items-center justify-center relative shrink-0 h-64 md:h-auto">
                     <img
-                      src={selectedProduct.image}
+                      src={selectedProduct.image_url}
                       alt={selectedProduct.name}
                       className="max-h-full w-auto object-contain drop-shadow-2xl mix-blend-multiply"
                     />
@@ -402,7 +372,7 @@ const Products = () => {
                           {selectedProduct.name}
                         </DialogTitle>
                         <DialogDescription className="text-base text-muted-foreground leading-relaxed">
-                          {selectedProduct.longDescription || selectedProduct.description}
+                          {selectedProduct.long_description || selectedProduct.description}
                         </DialogDescription>
                       </DialogHeader>
 
