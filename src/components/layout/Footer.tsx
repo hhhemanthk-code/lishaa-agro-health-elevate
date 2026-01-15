@@ -242,9 +242,9 @@ const Footer = () => {
         >
           <p>&copy; {new Date().getFullYear()} Lishaa Agro Health. All rights reserved.</p>
           <div className="flex items-center gap-2">
-            <span>Made with</span>
-            <Heart className="h-3 w-3 text-red-500 fill-current animate-pulse opacity-70" />
-            <span>for a Healthier World</span>
+            <a href="https://reddotconsultancy.co" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-400 transition-colors">
+              Designed and developed by Red Dot Consultancy
+            </a>
           </div>
         </motion.div>
       </div>
