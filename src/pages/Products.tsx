@@ -72,10 +72,8 @@ const Products = () => {
     : products.filter(product => product.category === activeCategory);
 
   const handleBuyNow = (productName: string) => {
-    toast({
-      title: "Added to Cart",
-      description: `${productName} has been added to your cart.`,
-    });
+    const message = encodeURIComponent(`Hi, I'm interested in buying ${productName}. Please share more details.`);
+    window.open(`https://wa.me/919164685136?text=${message}`, '_blank');
   };
 
   const categories = ["All", "Herbal Care", "Wellness", "Lifestyle"];

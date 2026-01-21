@@ -56,7 +56,7 @@ const Navbar = () => {
                 <img
                   src={logo}
                   alt="Lishaa Logo"
-                  className="h-12 w-auto relative z-10 drop-shadow-sm"
+                  className="h-16 w-auto relative z-10 drop-shadow-sm"
                 />
               </motion.div>
               <div className="hidden sm:block">

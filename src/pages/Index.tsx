@@ -262,9 +262,9 @@ const Index = () => {
                   className="absolute inset-0 rounded-full bg-emerald-600/20 blur-2xl"
                 />
 
-                {/* Main Image Container with Clean Border */}
-                <div className="relative w-full h-full rounded-full p-1.5 bg-gradient-to-b from-emerald-500/50 to-emerald-900/50 backdrop-blur-sm border border-emerald-500/30 shadow-2xl">
-                  <div className="w-full h-full rounded-full overflow-hidden border-4 border-[#0a1f16] relative z-10">
+                {/* Main Image Container with Clean White Border */}
+                <div className="relative w-full h-full rounded-full p-1 bg-white/90 backdrop-blur-sm shadow-2xl ring-2 ring-white/50 ring-offset-4 ring-offset-[#0a1f16]">
+                  <div className="w-full h-full rounded-full overflow-hidden border-[3px] border-white relative z-10">
                     <img src={founderImg} alt="Dr. Manjunath" className="w-full h-full object-cover scale-100 group-hover:scale-110 transition-transform duration-700 ease-in-out" />
                   </div>
                 </div>
@@ -291,7 +291,7 @@ const Index = () => {
                 <p className="text-white/60 text-sm uppercase tracking-widest font-bold mt-2">Founder & Chief Executive Officer</p>
               </div>
               <p className="text-white/80 text-lg mb-8 font-light leading-relaxed">
-                "Dr. Manjunath N. S. is a distinguished microbiologist, biotechnologist, academic leader, and innovation-driven entrepreneur, currently serving as the Founder and Chief Executive Officer of the firm."
+                "Dr. Manjunath N. S. is a distinguished Microbiologist, Biotechnologist, academic leader, and innovation-driven entrepreneur, currently serving as the Founder and Chief Executive Officer of the firm."
               </p>
 
               <Dialog>
@@ -360,7 +360,7 @@ const Index = () => {
                           viewport={{ once: true }}
                           className="first-letter:text-5xl first-letter:font-serif first-letter:float-left first-letter:mr-3 first-letter:mt-[-4px] first-letter:text-emerald-900"
                         >
-                          <strong>Dr. Manjunath N. S.</strong> is a distinguished microbiologist, biotechnologist, academic leader, and innovation-driven entrepreneur. With over <strong>26 years of combined experience</strong> spanning advanced research, export-oriented herbal industry R&D, and higher education, he brings deep scientific expertise aligned with strategic leadership.
+                          <strong>Dr. Manjunath N. S.</strong> is a distinguished Microbiologist, Biotechnologist, academic leader, and innovation-driven entrepreneur. With over <strong>26 years of combined experience</strong> spanning advanced research, export-oriented herbal industry R&D, and higher education, he brings deep scientific expertise aligned with strategic leadership.
                         </motion.p>
 
                         {/* Highlights Grid */}
@@ -458,9 +458,14 @@ const Index = () => {
                 <h3 className="font-bold text-gray-900 text-lg mb-1">{product.name}</h3>
                 <p className="text-emerald-600 font-bold">{product.price}</p>
                 <div className="mt-4 pt-4 border-t border-gray-100 flex gap-2">
-                  <Link to="/products" className="flex-1">
+                  <a
+                    href={`https://wa.me/919164685136?text=${encodeURIComponent(`Hi, I'm interested in buying ${product.name}. Please share more details.`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1"
+                  >
                     <Button className="w-full rounded-xl bg-gray-900 text-white hover:bg-emerald-600 transition-colors">Buy Now</Button>
-                  </Link>
+                  </a>
                 </div>
               </div>
             ))}
