@@ -122,12 +122,12 @@ const Footer = () => {
           {/* Brand Column */}
           <motion.div variants={itemVariants} className="lg:col-span-4 space-y-6">
             <Link to="/" className="flex items-center gap-4 group w-fit">
-              <div className="w-24 h-24 bg-white/5 backdrop-blur-sm rounded-2xl flex items-center justify-center border border-white/10 group-hover:bg-white/10 transition-colors">
-                <img src={logo} alt="Lishaa Logo" className="h-16 w-auto" />
+              <div className="w-28 h-28 bg-white rounded-2xl flex items-center justify-center border border-white/20 shadow-xl group-hover:shadow-2xl group-hover:scale-105 transition-all duration-300 overflow-hidden">
+                <img src={logo} alt="Lishaa Logo" className="h-20 w-auto object-contain" />
               </div>
               <div className="flex flex-col">
-                <span className="font-display text-2xl font-bold tracking-wide text-white">LISHAA</span>
-                <span className="text-[10px] tracking-[0.4em] text-emerald-400 uppercase font-bold">Agro Health</span>
+                <span className="font-display text-3xl font-bold tracking-wide text-white">LISHAA</span>
+                <span className="text-xs tracking-[0.4em] text-emerald-400 uppercase font-bold">Agro Health</span>
               </div>
             </Link>
             <p className="text-white/60 leading-relaxed font-light text-base max-w-sm">

@@ -48,19 +48,21 @@ const Navbar = () => {
             {/* Logo Section */}
             <Link to="/" className="flex items-center gap-3 group relative z-50">
               <motion.div
-                whileHover={{ rotate: 10, scale: 1.1 }}
+                whileHover={{ rotate: 5, scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 300 }}
                 className="relative"
               >
                 <div className="absolute inset-0 bg-emerald-400/30 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <img
-                  src={logo}
-                  alt="Lishaa Logo"
-                  className="h-16 w-auto relative z-10 drop-shadow-sm"
-                />
+                <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-full flex items-center justify-center shadow-lg border border-gray-100/50 relative z-10 overflow-hidden">
+                  <img
+                    src={logo}
+                    alt="Lishaa Logo"
+                    className="h-14 md:h-[4.5rem] w-auto object-contain drop-shadow-sm"
+                  />
+                </div>
               </motion.div>
               <div className="hidden sm:block">
-                <p className={`font-display text-lg font-bold tracking-tight transition-colors duration-300 ${textColor}`}>
+                <p className={`font-display text-xl font-bold tracking-tight transition-colors duration-300 ${textColor}`}>
                   LISHAA
                 </p>
                 <p className={`text-[10px] tracking-[0.3em] font-medium uppercase transition-colors duration-300 ${isTransparentPage && !isScrolled ? "text-white/80" : "text-emerald-600"}`}>
