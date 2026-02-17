@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useCallback, useEffect, useState } from "react";
 import { supabase, Product } from '@/lib/supabase';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
@@ -21,11 +21,7 @@ export default function AdminDashboard() {
     const { toast } = useToast();
     const navigate = useNavigate();
 
-    useEffect(() => {
-        fetchProducts();
-    }, []);
-
-    const fetchProducts = async () => {
+    const fetchProducts = useCallback(async () => {
         try {
             const { data, error } = await supabase
                 .from('products')
@@ -34,16 +30,21 @@ export default function AdminDashboard() {
 
             if (error) throw error;
             setProducts(data || []);
-        } catch (error: any) {
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
             toast({
                 title: "Error",
-                description: error.message,
+                description: errorMessage,
                 variant: "destructive",
             });
         } finally {
             setLoading(false);
         }
-    };
+    }, [toast]);
+
+    useEffect(() => {
+        fetchProducts();
+    }, [fetchProducts]);
 
     const handleDelete = async (id: number) => {
         if (!confirm('Are you sure you want to delete this product?')) return;
@@ -61,10 +62,11 @@ export default function AdminDashboard() {
                 description: "Product deleted successfully",
             });
             fetchProducts();
-        } catch (error: any) {
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
             toast({
                 title: "Error",
-                description: error.message,
+                description: errorMessage,
                 variant: "destructive",
             });
         }

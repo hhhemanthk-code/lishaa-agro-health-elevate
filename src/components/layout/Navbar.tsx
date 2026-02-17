@@ -43,7 +43,7 @@ const Navbar = () => {
       <motion.header
         className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${isScrolled ? "py-3" : "py-5"} ${navbarBackground}`}
       >
-        <div className="container mx-auto px-4 lg:px-8">
+        <div className="container mx-auto px-3 sm:px-4 lg:px-8">
           <nav className="flex items-center justify-between">
             {/* Logo Section */}
             <Link to="/" className="flex items-center gap-3 group relative z-50">
@@ -52,27 +52,27 @@ const Navbar = () => {
                 transition={{ type: "spring", stiffness: 300 }}
                 className="relative"
               >
-                <div className="absolute inset-0 bg-emerald-400/30 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-full flex items-center justify-center shadow-lg border border-gray-100/50 relative z-10 overflow-hidden">
+                <div className="absolute inset-0 bg-emerald-400/20 blur-xl rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="w-16 h-12 md:w-20 md:h-16 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-xl border border-white/20 relative z-10 overflow-hidden">
                   <img
                     src={logo}
                     alt="Lishaa Logo"
-                    className="h-14 md:h-[4.5rem] w-auto object-contain drop-shadow-sm"
+                    className="h-10 md:h-14 w-auto object-contain"
                   />
                 </div>
               </motion.div>
               <div className="hidden sm:block">
-                <p className={`font-display text-xl font-bold tracking-tight transition-colors duration-300 ${textColor}`}>
+                <p className={`font-display text-2xl font-bold tracking-tight transition-colors duration-300 ${textColor}`}>
                   LISHAA
                 </p>
-                <p className={`text-[10px] tracking-[0.3em] font-medium uppercase transition-colors duration-300 ${isTransparentPage && !isScrolled ? "text-white/80" : "text-emerald-600"}`}>
+                <p className={`text-xs tracking-[0.3em] font-semibold uppercase transition-colors duration-300 ${isTransparentPage && !isScrolled ? "text-white/80" : "text-emerald-600"}`}>
                   Agro Health
                 </p>
               </div>
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-2 p-1 rounded-full bg-white/5 backdrop-blur-[2px] border border-white/10 shadow-sm">
+            <div className="hidden md:flex items-center gap-1 p-1 rounded-full bg-white/5 backdrop-blur-[2px] border border-white/10 shadow-sm">
               {navItems.map((item) => (
                 <Link key={item.path} to={item.path} className="relative">
                   {location.pathname === item.path && (
@@ -83,7 +83,7 @@ const Navbar = () => {
                     />
                   )}
                   <span
-                    className={`relative z-10 px-6 py-2.5 rounded-full text-sm font-medium transition-colors duration-300 block ${location.pathname === item.path
+                    className={`relative z-10 px-4 py-2 rounded-full text-xs md:text-sm font-medium transition-colors duration-300 block ${location.pathname === item.path
                       ? "text-white"
                       : isTransparentPage && !isScrolled
                         ? "text-white/90 hover:bg-white/10"
@@ -97,17 +97,18 @@ const Navbar = () => {
             </div>
 
             {/* CTA & Mobile Toggle */}
-            <div className="flex items-center gap-4">
-              <div className="hidden lg:block relative group">
+            <div className="flex items-center gap-2 sm:gap-4">
+              <div className="hidden md:block relative group">
                 <Link to="/contact">
                   <Button
-                    className={`rounded-full px-6 h-11 font-semibold transition-all duration-300 shadow-lg ${isTransparentPage && !isScrolled
+                    className={`rounded-full px-4 md:px-6 h-9 md:h-11 text-sm md:text-base font-semibold transition-all duration-300 shadow-lg ${isTransparentPage && !isScrolled
                       ? "bg-white text-emerald-900 hover:bg-emerald-50"
                       : "bg-emerald-600 text-white hover:bg-emerald-700"
                       }`}
                   >
-                    <span>Get in Touch</span>
-                    <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                    <span className="hidden sm:inline">Get in Touch</span>
+                    <span className="sm:hidden">Contact</span>
+                    <ChevronRight className="w-3 h-3 md:w-4 md:h-4 ml-1 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </Link>
               </div>
@@ -116,9 +117,9 @@ const Navbar = () => {
               <motion.button
                 whileTap={{ scale: 0.9 }}
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className={`lg:hidden p-2 rounded-full backdrop-blur-md transition-colors ${isTransparentPage && !isScrolled ? "bg-white/10 text-white" : "bg-black/5 text-black"}`}
+                className={`md:hidden p-2 rounded-full backdrop-blur-md transition-colors ${isTransparentPage && !isScrolled ? "bg-white/10 text-white" : "bg-black/5 text-black"}`}
               >
-                {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </motion.button>
             </div>
           </nav>

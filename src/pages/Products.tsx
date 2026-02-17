@@ -1,5 +1,5 @@
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
-import { useState, useRef, useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Search, Filter, ShoppingCart, Star, X, Check, ChevronDown, ArrowRight, Info, Leaf, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -39,11 +39,7 @@ const Products = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [activeCategory, setActiveCategory] = useState("All");
 
-  useEffect(() => {
-    fetchProducts();
-  }, []);
-
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('products')
@@ -55,7 +51,8 @@ const Products = () => {
       if (data && data.length > 0) {
         setSelectedProduct(data[0]);
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
       console.error('Error fetching products:', error);
       toast({
         title: "Error",
@@ -65,7 +62,11 @@ const Products = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [toast]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
 
   const filteredProducts = activeCategory === "All"
     ? products
@@ -73,7 +74,7 @@ const Products = () => {
 
   const handleBuyNow = (productName: string) => {
     const message = encodeURIComponent(`Hi, I'm interested in buying ${productName}. Please share more details.`);
-    window.open(`https://wa.me/919164685136?text=${message}`, '_blank');
+    window.open(`https://wa.me/918762221973?text=${message}`, '_blank');
   };
 
   const categories = ["All", "Herbal Care", "Wellness", "Lifestyle"];

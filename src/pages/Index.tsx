@@ -144,7 +144,7 @@ const Index = () => {
         </div>
 
         {/* Content Container */}
-        <div className="container relative z-10 px-4 pt-20 text-center">
+        <div className="container relative z-10 px-3 sm:px-4 pt-16 sm:pt-20 text-center">
           <motion.div
             style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
             className="relative inline-block"
@@ -154,14 +154,14 @@ const Index = () => {
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.8 }}
-              className="mb-8 inline-flex items-center gap-2 px-6 py-2 rounded-full bg-white/5 backdrop-blur-md border border-white/10"
+              className="mb-6 sm:mb-8 inline-flex items-center gap-2 px-4 sm:px-6 py-2 rounded-full bg-white/5 backdrop-blur-md border border-white/10"
             >
               <Sparkles className="h-3 w-3 text-emerald-400" />
               <span className="text-emerald-50 text-[10px] tracking-[0.25em] uppercase font-bold">The Future of Herbal Wellness</span>
             </motion.div>
 
             {/* Headline - Masked Reveal Animation */}
-            <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-8 tracking-tight leading-[1.1]">
+            <h1 className="font-display text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 sm:mb-8 tracking-tight leading-[1.1]">
               <div className="overflow-hidden">
                 <motion.span
                   initial={{ y: "100%" }}
@@ -190,7 +190,7 @@ const Index = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1, duration: 1 }}
-              className="text-white/70 text-lg md:text-xl font-light max-w-2xl mx-auto mb-12 leading-relaxed"
+              className="text-white/70 text-base sm:text-lg md:text-xl font-light max-w-2xl mx-auto mb-8 sm:mb-12 leading-relaxed"
             >
               Experience a new era of health where ancient herbal wisdom meets modern biotechnology.
             </motion.p>
@@ -200,15 +200,15 @@ const Index = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.2, duration: 0.8 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+              className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center"
             >
               <Link to="/products">
-                <Button className="h-14 px-8 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-lg hover:px-10 transition-all duration-300 shadow-[0_10px_40px_-10px_rgba(16,185,129,0.5)]">
+                <Button className="h-12 sm:h-14 px-6 sm:px-8 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-base sm:text-lg hover:px-10 transition-all duration-300 shadow-[0_10px_40px_-10px_rgba(16,185,129,0.5)]">
                   Explore Products
                 </Button>
               </Link>
               <Link to="/contact">
-                <Button variant="outline" className="h-14 px-8 rounded-full border-white/20 bg-white/5 hover:bg-white/10 text-white font-semibold text-lg backdrop-blur-sm">
+                <Button variant="outline" className="h-12 sm:h-14 px-6 sm:px-8 rounded-full border-white/20 bg-white/5 hover:bg-white/10 text-white font-semibold text-base sm:text-lg backdrop-blur-sm">
                   Contact Support
                 </Button>
               </Link>
@@ -234,23 +234,23 @@ const Index = () => {
       </section>
 
       {/* Mission Section */}
-      <section ref={missionRef} className="py-24 bg-white relative overflow-hidden">
-        <div className="container mx-auto px-4 relative z-10 text-center max-w-4xl">
+      <section ref={missionRef} className="py-16 sm:py-24 bg-white relative overflow-hidden">
+        <div className="container mx-auto px-3 sm:px-4 relative z-10 text-center max-w-4xl">
           <span className="text-emerald-600 font-bold uppercase tracking-widest text-xs mb-4 block">Our Philosophy</span>
-          <h2 className="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-8 leading-tight">
+          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 sm:mb-8 leading-tight">
             We don't just sell products.<br />We engineer wellness.
           </h2>
-          <p className="text-xl text-gray-600 font-light leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-gray-600 font-light leading-relaxed">
             Every product at <span className="font-bold text-gray-900">Lishaa Agro Health</span> is a result of rigorous research, blending potent herbal extracts with scientifically proven formulations to deliver real, measurable health benefits.
           </p>
         </div>
       </section>
 
       {/* Founder Section */}
-      <section ref={founderRef} className="py-24 bg-[#0a1f16] text-white relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[120px]" />
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="flex flex-col md:flex-row items-center gap-12 md:gap-20">
+      <section ref={founderRef} className="py-16 sm:py-24 bg-[#0a1f16] text-white relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-emerald-500/5 rounded-full blur-[80px] sm:blur-[120px]" />
+        <div className="container mx-auto px-3 sm:px-4 relative z-10">
+          <div className="flex flex-col md:flex-row items-center gap-8 sm:gap-12 md:gap-20">
             {/* Image Side */}
             {/* Image Side - Clean & Elegant Design */}
             <div className="flex-1 relative group flex justify-center">
@@ -459,7 +459,7 @@ const Index = () => {
                 <p className="text-emerald-600 font-bold">{product.price}</p>
                 <div className="mt-4 pt-4 border-t border-gray-100 flex gap-2">
                   <a
-                    href={`https://wa.me/919164685136?text=${encodeURIComponent(`Hi, I'm interested in buying ${product.name}. Please share more details.`)}`}
+                    href={`https://wa.me/918762221973?text=${encodeURIComponent(`Hi, I'm interested in buying ${product.name}. Please share more details.`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-1"

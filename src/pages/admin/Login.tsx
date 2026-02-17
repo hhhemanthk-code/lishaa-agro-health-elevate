@@ -31,10 +31,11 @@ export default function AdminLogin() {
                 });
                 navigate('/admin/dashboard');
             }
-        } catch (error: any) {
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
             toast({
                 title: "Login Failed",
-                description: error.message || "Invalid credentials",
+                description: errorMessage,
                 variant: "destructive",
             });
         } finally {
